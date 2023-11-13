@@ -8,6 +8,7 @@ import unittest
 from Scheduling import CourseScheduler
 
 class TestClassScheduling():
+  
     def setUp(self):
         self.scheduler = CourseScheduler()
         self.scheduler.load_courses_from_file('mock_courses.txt')  # Assumption that the method loads courses from a file
@@ -25,9 +26,10 @@ class TestClassScheduling():
 
     def testEnterCourses(self):
         pass
-    def testShownSchedule(self):
+      
+    def testShownSchedule(self): #FR4
         pass
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': #runs tests
     unittest.main()
