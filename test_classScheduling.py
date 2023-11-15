@@ -23,9 +23,13 @@ class TestClassScheduling(unittest.TestCase):
         self.assertTrue(self.scheduler.set_course_count(3))  # Assuming that the input was a valid input
         self.assertRaises(ValueError, self.scheduler.set_course_count, -1)  # For Negative numbers
         self.assertRaises(TypeError, self.scheduler.set_course_count, 'a')  # For Non-numeric/string input
+        self.assertRaises(ValueError, self.scheduler.set_course_count, 0)  # For Zero
 
     def test_enter_courses(self): #FR3
-        pass
+         # Test to verify if entered courses are stored correctly
+        entered_courses = [...]  # List of courses entered by the user
+        self.scheduler.enter_courses(entered_courses)
+        self.assertEqual(self.scheduler.get_user_courses(), entered_courses)
       
     def test_shown_schedule(self, course): #FR4
         self.scheduler.add_to_schedule(course)
