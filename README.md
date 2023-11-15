@@ -4,7 +4,8 @@
 ## Project Description
 Iteration 2 of this project implements unit tests of all functional requirements. This includes a tests that:
 - Verify if all courses are being displayed correctly
-- Verfy if the courses entered are valid
+- Verify if the courses entered are valid
+- Verify if entered courses are stored correctly
 - Verify if the final schedule is displayed correctly, and if not, if the proper error message is displayed
 
 Project Prompt: You are tasked to build a course scheduling system to help students schedule courses for a semester. You will bring into practice all of the techniques we have studied in the first weeks of the semester, while learning some new ones along the way. You will engage in this activity both inside class and outside of class, while working in a team of 3 students. It will be completed in 3 iterations.
