@@ -31,9 +31,9 @@ class TestClassScheduling(unittest.TestCase):
         self.assertEqual(self.scheduler.get_user_courses(), entered_courses)
 
     def test_shown_schedule(self, course): #FR4
+        self.assertEqual(self.scheduler.get_schedule(), "","There is no schedule found")  # checks to see if there is no schedule
         self.scheduler.add_to_schedule(course)
-        self.assertEqual(self.scheduler.get_schedule(), course)
-        self.assertEqual(self.scheduler.get_schedule(), "", "There is no schedule found")
+        self.assertEqual(self.scheduler.get_schedule(), course) #makes sure the schedule will show when added
 
 
 if __name__ == '__main__': #runs tests
