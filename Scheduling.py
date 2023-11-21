@@ -4,26 +4,20 @@ Where all our methods/functions go
 
 
 class Scheduling:
-    courses = "CoursesDemo.txt"
-    fileData = open(courses, "rt")
-    courseData = fileData.readlines()
-    fileData.close()
+    def __init__(self, courses_file = "CoursesDemo.txt"):
+        self.courses = courses_file
+        self.fileData = open(self.courses, "rt") # opens file
+        self.courseData = self.fileData.readlines() # reads the file
+        self.fileData.close()
+
+    def text_file_to_dictionary(self, courseData):
+        classes_dict = {}
+        for line in courseData: # reads each line in the file
+            classes_dict = {"course_number" : line} # this is only returning the last line (problem)
+
+        return classes_dict
 
 
-def text_file_to_dictionary(courseData):
-    for line in courseData:
-        parts = line.split()
-        course_number = parts[0]
-        course_section = parts[1]
-        days = parts[2]
-        start_time = parts[3]
-        end_time = parts[4]
-        classes_dict = {"course_number": course_number,
-                        "course_section": course_section,
-                        "days": days,
-                        "start_time": start_time,
-                        "end_time": end_time
-                        }
-        print(classes_dict)
-
-    text_file_to_dictionary(courseData)
+# Example usage
+scheduling_instance = Scheduling()
+print(scheduling_instance.text_file_to_dictionary(scheduling_instance.courseData))
