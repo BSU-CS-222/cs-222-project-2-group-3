@@ -13,7 +13,7 @@ from Scheduling import Scheduling
 class TestClassScheduling(unittest.TestCase):
   
     def setUp(self):
-        self.scheduler = CourseScheduler()
+        self.scheduler = Scheduling()
         self.scheduler.load_courses_from_file('mock_courses.txt')  # Assumption that the method loads courses from a file
     
     def test_display_all_courses(self): #FR1
