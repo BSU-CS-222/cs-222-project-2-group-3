@@ -2,6 +2,9 @@
 Testing class
 Notes: I personally prefer snake_case over camelCase which is how I changed the tests, if you prefer one naming convention over the other let's go with that
 as I would like to be consistent and not make it ugly
+
+add chck for duplicates
+
 '''
 
 import unittest
@@ -34,6 +37,10 @@ class TestClassScheduling(unittest.TestCase):
         self.assertEqual(self.scheduler.get_schedule(), "","There is no schedule found")  # checks to see if there is no schedule
         self.scheduler.add_to_schedule(course)
         self.assertEqual(self.scheduler.get_schedule(), course) #makes sure the schedule will show when added
+
+    def check_for_duplicates(self):
+        entered_courses = [...]  # List of courses entered by the user
+        self.assertFalse(self.scheduler.check_for_duplicates(entered_courses)) #makes sure that the courses shouldn't be the same
 
 
 if __name__ == '__main__': #runs tests
