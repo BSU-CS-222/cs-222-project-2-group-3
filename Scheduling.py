@@ -3,4 +3,5 @@ Where all our methods/functions go
 '''
 
 class CourseScheduler:
-    pass
+
+    def remove_course(self):
