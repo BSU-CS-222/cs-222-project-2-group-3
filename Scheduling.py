@@ -3,5 +3,7 @@ Where all our methods/functions go
 '''
 
 class CourseScheduler:
-
-    def remove_course(self):
+    courses = "CoursesDemo.txt"
+    fileData = open(courses, "rt")
+    courseData = fileData.readlines()
+    fileData.close()
