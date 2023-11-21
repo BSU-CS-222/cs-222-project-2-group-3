@@ -8,7 +8,7 @@ add chck for duplicates
 '''
 
 import unittest
-from Scheduling import CourseScheduler
+from Scheduling import Scheduling
 
 class TestClassScheduling(unittest.TestCase):
   
