@@ -4,7 +4,7 @@ Where all our methods/functions go
 
 
 class Scheduling:
-    def __init__(self, courses_file="CoursesDemo.txt"):
+    def __init__(self, courses_file = "CoursesDemo.txt"):
         self.courses_file = courses_file
         self.course_data = self.read_courses_file()
 
@@ -34,4 +34,4 @@ class Scheduling:
 
 # Example usage
 scheduling_instance = Scheduling()
-print(scheduling_instance.text_file_to_dictionary(scheduling_instance.courseData))
+print(scheduling_instance.text_file_to_dictionary())
