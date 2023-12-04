@@ -36,7 +36,7 @@ class Scheduling:
     def generate_schedule(self, selected_courses):
         schedule = {}
         for course_key in selected_courses:
-            # Making comparison case-insensitive
+            # Case-insensitivity and stripping white space
             course_key = course_key.strip().upper()
 
             # Generate expected course key for comparison
@@ -45,7 +45,7 @@ class Scheduling:
             # Convert the course data to a dictionary
             course_data_dict = self.text_file_to_dictionary()
 
-            if expected_course_key in course_data_dict:  # Check if the entered key is in the course data
+            if expected_course_key in course_data_dict:  # Check if entered key is in course_data
                 schedule[expected_course_key] = course_data_dict[expected_course_key]
             else:
                 print(f"Course {course_key} not found in the schedule.")
