@@ -45,3 +45,6 @@ class TestClassScheduling(unittest.TestCase):
     def test_check_for_duplicates(self):
         entered_courses = ['CS120', 'CS121', 'CS222']  # List of courses entered by the user
         self.assertTrue(self.scheduler.check_for_duplicates(entered_courses))  # makes sure that the courses shouldn't be the same
+
+if __name__ == '__main__': #runs tests
+    unittest.main()
