@@ -3,10 +3,14 @@ class Scheduling:
         self.courses_file = courses_file
         self.course_data = self.read_courses_file()
 
+
+    # Reads the specified file and returns a list of strings
     def read_courses_file(self):
         with open(self.courses_file, "rt") as file:
             return file.readlines()
 
+
+    # Takes course_data list, splits it into parts, and creates a dictionary
     def text_file_to_dictionary(self):
         classes_dict = {}
         for line in self.course_data:
@@ -26,13 +30,16 @@ class Scheduling:
                 }
         return classes_dict
     
+
+    # Takes list of selected course keys and checks if they exist in the course data dictionary. 
+    # If found, they are added to the schedule dictionary.
     def generate_schedule(self, selected_courses):
         schedule = {}
         for course_key in selected_courses:
-            # Stripping whitespaces and making the comparison case-insensitive
+            # Making comparison case-insensitive
             course_key = course_key.strip().upper()
 
-            # Generate the expected course key for comparison
+            # Generate expected course key for comparison
             expected_course_key = f"{course_key.split('-')[0]}-{course_key.split('-')[1]}"
 
             # Convert the course data to a dictionary
@@ -45,16 +52,20 @@ class Scheduling:
         return schedule
 
 
-    def register_courses(self):
-        print("Available Courses:")
+    # Prints the available courses and prompts user for number of courses to register. 
+    def display_available_courses(self):
+        print("Available courses:")
         for course_key, details in self.text_file_to_dictionary().items():
-            print(f"{course_key} - {details['days']}, Start: {details['start_time']}, End: {details['end_time']}")
+            print(f"{course_key} | {details['days']} | Start: {details['start_time']}, End: {details['end_time']}")
             # Formatting for displaying all courses
 
+
+    # Collects the course keys from the user and generates their schedule.
+    def register_courses(self):
         n = int(input("Enter how many courses you would like to register for: "))
         selected_courses = []
         for i in range(n):
-            course_key = input(f"Enter course {i + 1} code (e.g., CS120-001): ")
+            course_key = input(f"Enter course code (ex: CS120-001): ")
             selected_courses.append(course_key)
 
         schedule = self.generate_schedule(selected_courses)
@@ -70,6 +81,7 @@ class Scheduling:
 
 # Example usage
 scheduling_instance = Scheduling()
+scheduling_instance.display_available_courses()
 scheduling_instance.register_courses()
 
 
