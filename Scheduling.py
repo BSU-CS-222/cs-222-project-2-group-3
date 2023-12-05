@@ -22,7 +22,8 @@ class CourseManager:
                         self.courses.append(course)
 
     def find_courses_by_number(self, course_number):
-        return [course for course in self.courses if course.course_number == course_number]
+        return [course for course in self.courses
+                 if course.course_number == course_number]
 
     def check_time_conflict(self, course1, course2):
         days_conflict = any(day in course2.days for day in course1.days)
@@ -49,17 +50,23 @@ class Scheduler:
         return schedule
 
     def register_courses(self):
-        n = int(input("Enter how many courses you would like to register for: "))
+        while True:
+            try:
+                n = int(input("Enter how many courses you would like to register for: "))
+                break
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+                
         selected_courses = set()
         while len(selected_courses) < n:
-            course_number = input("Enter course number: ")
+            course_number = input("Enter course number: ").upper()
             if course_number in selected_courses:
                 print(f"You already entered {course_number}, Please enter another course.")
+            elif not self.course_manager.find_courses_by_number(course_number):
+                print(f"Course {course_number} does not exist. Please enter a valid course number.")
             else:
                 selected_courses.add(course_number)
-
         schedule = self.generate_non_overlapping_schedule(list(selected_courses))
-
         if schedule:
             print("\nYour Schedule:")
             for course in schedule:
@@ -81,13 +88,7 @@ class Scheduler:
         return None
 
 if __name__ == '__main__':
-    print("Welcome to the Course Scheduler!")
     scheduler_instance = Scheduler()
-    try:
-        scheduler_instance.course_manager.load_courses()
-    except FileNotFoundError:
-        print("Error: 'courses.txt' file not found. Please ensure the file exists in the correct directory.")
-        exit(1)
-
+    scheduler_instance.course_manager.load_courses()
     scheduler_instance.display_available_courses()
     scheduler_instance.register_courses()
