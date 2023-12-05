@@ -1,50 +1,64 @@
-'''
-Testing class
-Notes: I personally prefer snake_case over camelCase which is how I changed the tests, if you prefer one naming convention over the other let's go with that
-as I would like to be consistent and not make it ugly
-
-add chck for duplicates
-
-'''
-
 import unittest
-from Scheduling import Scheduling
+from unittest.mock import patch
+from Scheduling import Course, CourseManager, Scheduler
 
+class TestCourse(unittest.TestCase):
+    def test_course_creation(self):
+        course = Course("CS120", "001", "MWF", "0900", "0950")
+        self.assertEqual(course.course_number, "CS120")
+        self.assertEqual(course.section, "001")
+        self.assertEqual(course.days, "MWF")
+        self.assertEqual(course.start_time, "0900")
+        self.assertEqual(course.end_time, "0950")
 
-class TestClassScheduling(unittest.TestCase):
-
+class TestCourseManager(unittest.TestCase):
     def setUp(self):
-        self.scheduler = Scheduling()
-        self.scheduler.load_courses_from_file()  # Assumption that the method loads courses from a file
+        self.course_manager = CourseManager()
 
-    def test_display_all_courses(self):  # FR1
-        # Test to verify if all courses are displayed correctly
-        expected_output = ['CS120', 'CS121', 'CS120', 'CS222']  # Expected format and content of the course list
-        self.assertEqual(self.scheduler.display_courses(), expected_output)
+    def test_load_courses(self):
+        # Create a mock courses file
+        with open("mock_courses.txt", "w") as file:
+            file.write("CS120 001 MWF 0900 0950\n")
 
-    def test_enter_number_of_courses(self):  # FR2
-        # Test to verify if the courses entered are valid
-        self.assertTrue(self.scheduler.set_course_count(3))  # Assuming that the input was a valid input
-        with self.assertRaises(ValueError):  # For Negative numbers
-            self.scheduler.set_course_count(-1)
-        with self.assertRaises(ValueError):  # For Non-numeric/string input
-            self.scheduler.set_course_count('a')
+        self.course_manager.load_courses("mock_courses.txt")
+        self.assertEqual(len(self.course_manager.courses), 1)
+    
+    def test_find_courses_by_number(self):
+        course1 = Course("CS120", "001", "MWF", "0900", "0950")
+        course2 = Course("CS120", "002", "TR", "1000", "1050")
+        self.course_manager.courses.extend([course1, course2])
 
-    def test_enter_courses(self):  # FR3
-        # Test to verify if entered courses are stored correctly
-        entered_courses = ['CS120', 'CS121', 'CS222']  # List of courses entered by the user
-        self.scheduler.enter_courses(entered_courses)
-        self.assertEqual(self.scheduler.get_user_courses(), entered_courses)
+        found_courses = self.course_manager.find_courses_by_number("CS120")
+        self.assertEqual(len(found_courses), 2)
+        self.assertIn(course1, found_courses)
+        self.assertIn(course2, found_courses)
 
-    def test_shown_schedule(self):  # FR4
-        self.assertEqual(self.scheduler.get_schedule(), {}, "There is no schedule found")  # checks to see if there is no schedule
-        course = {'course_number': 'CS120', 'course_section': '001', 'days': 'MWF', 'start_time': '0900', 'end_time': '0950'}
-        self.scheduler.add_to_schedule(course)
-        self.assertEqual(self.scheduler.get_schedule(), course)  # makes sure the schedule will show when added
+    def test_check_time_conflict(self):
+        course1 = Course("CS120", "001", "MWF", "0900", "0950")
+        course2 = Course("CS121", "002", "MWF", "0930", "1020")
+        self.assertTrue(self.course_manager.check_time_conflict(course1, course2))
 
-    def test_check_for_duplicates(self):
-        entered_courses = ['CS120', 'CS121', 'CS222']  # List of courses entered by the user
-        self.assertTrue(self.scheduler.check_for_duplicates(entered_courses))  # makes sure that the courses shouldn't be the same
+class TestScheduler(unittest.TestCase):
+    def setUp(self):
+        self.scheduler = Scheduler()
 
-if __name__ == '__main__': #runs tests
+    def test_generate_non_overlapping_schedule(self):
+        # directly added course objects here instead of going through the mock file for brevity sake
+        course1 = Course("CS120", "001", "MWF", "0800", "0850")
+        course2 = Course("MATH165", "001", "TR", "0900", "0950")
+        self.scheduler.course_manager.courses.extend([course1, course2])
+        schedule = self.scheduler.generate_non_overlapping_schedule(["CS120", "MATH165"])
+        self.assertEqual(len(schedule), 2)
+        self.assertIn(course1, schedule)
+        self.assertIn(course2, schedule)
+
+    @patch('builtins.input', side_effect=['2', 'CS120', 'MATH165'])
+    def test_register_courses(self, mock_input):
+        # Set up mock courses in course_manager
+        course1 = Course("CS120", "001", "MWF", "0800", "0850")
+        course2 = Course("MATH165", "001", "TR", "0900", "0950")
+        self.scheduler.course_manager.courses.extend([course1, course2])
+        self.scheduler.register_courses()
+
+if __name__ == '__main__':
     unittest.main()
