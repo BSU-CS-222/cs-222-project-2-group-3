@@ -21,11 +21,13 @@ class CourseManager:
                         course = Course(course_parts[0], course_parts[1], course_parts[2], course_parts[3], course_parts[4])
                         self.courses.append(course)
 
-    def find_course(self, course_key):
-        for course in self.courses:
-            if f"{course.course_number}-{course.section}" == course_key:
-                return course
-        return None
+    def find_courses_by_number(self, course_number):
+        return [course for course in self.courses if course.course_number == course_number]
+
+    def check_time_conflict(self, course1, course2):
+        days_conflict = any(day in course2.days for day in course1.days)
+        time_conflict = not (course1.end_time <= course2.start_time or course1.start_time >= course2.end_time)
+        return days_conflict and time_conflict
 
 class Scheduler:
     def __init__(self):
@@ -34,7 +36,7 @@ class Scheduler:
     def display_available_courses(self):
         print("Available courses:")
         for course in self.course_manager.courses:
-            print(f"{course.course_number}-{course.section} | {course.days} | Start: {course.start_time}, End: {course.end_time}")
+            print(f"{course.course_number} | {course.section} | {course.days} | Start: {course.start_time}, End: {course.end_time}")
 
     def generate_schedule(self, selected_courses):
         schedule = []
@@ -48,12 +50,15 @@ class Scheduler:
 
     def register_courses(self):
         n = int(input("Enter how many courses you would like to register for: "))
-        selected_courses = []
-        for i in range(n):
-            course_key = input(f"Enter course code (ex: CS120-001): ")
-            selected_courses.append(course_key)
+        selected_courses = set()
+        while len(selected_courses) < n:
+            course_number = input("Enter course number: ")
+            if course_number in selected_courses:
+                print(f"You already entered {course_number}, Please enter another course.")
+            else:
+                selected_courses.add(course_number)
 
-        schedule = self.generate_schedule(selected_courses)
+        schedule = self.generate_non_overlapping_schedule(list(selected_courses))
 
         if schedule:
             print("\nYour Schedule:")
@@ -63,8 +68,26 @@ class Scheduler:
         else:
             print("No schedule found for the selected courses.")
 
-# Example usage
-scheduler_instance = Scheduler()
-scheduler_instance.course_manager.load_courses()
-scheduler_instance.display_available_courses()
-scheduler_instance.register_courses()
+    def generate_non_overlapping_schedule(self, course_numbers):
+        schedule = []
+        for number in course_numbers:
+            possible_sections = self.course_manager.find_courses_by_number(number)
+            for section in possible_sections:
+                if all(not self.course_manager.check_time_conflict(section, scheduled_course) for scheduled_course in schedule):
+                    schedule.append(section)
+                    break
+        if len(schedule) == len(course_numbers):
+            return schedule
+        return None
+
+if __name__ == '__main__':
+    print("Welcome to the Course Scheduler!")
+    scheduler_instance = Scheduler()
+    try:
+        scheduler_instance.course_manager.load_courses()
+    except FileNotFoundError:
+        print("Error: 'courses.txt' file not found. Please ensure the file exists in the correct directory.")
+        exit(1)
+
+    scheduler_instance.display_available_courses()
+    scheduler_instance.register_courses()
