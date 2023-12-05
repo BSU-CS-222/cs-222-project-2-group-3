@@ -37,7 +37,7 @@ class Scheduler:
     def display_available_courses(self):
         print("Available courses:")
         for course in self.course_manager.courses:
-            print(f"{course.course_number} | {course.section} | {course.days} | Start: {course.start_time}, End: {course.end_time}")
+            print(f"{course.course_number}")
 
     def generate_schedule(self, selected_courses):
         schedule = []
@@ -53,7 +53,11 @@ class Scheduler:
         while True:
             try:
                 n = int(input("Enter how many courses you would like to register for: "))
-                break
+                #will need to change the len of it so it will work properly since multiple courses of the same can be selected with this len
+                if n > len(self.course_manager.courses):
+                    print("you can't have more courses than " + str(len(self.course_manager.courses)))
+                else:
+                    break
             except ValueError:
                 print("Invalid input. Please enter an integer.")
                 
@@ -86,6 +90,7 @@ class Scheduler:
         if len(schedule) == len(course_numbers):
             return schedule
         return None
+
 
 if __name__ == '__main__':
     scheduler_instance = Scheduler()
