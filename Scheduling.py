@@ -23,12 +23,21 @@ class CourseManager:
 
     def find_courses_by_number(self, course_number):
         return [course for course in self.courses
-                 if course.course_number == course_number]
+                if course.course_number == course_number]
 
     def check_time_conflict(self, course1, course2):
         days_conflict = any(day in course2.days for day in course1.days)
         time_conflict = not (course1.end_time <= course2.start_time or course1.start_time >= course2.end_time)
         return days_conflict and time_conflict
+
+    def max_offered_courses(self):
+        max_courses = {}
+        for course in self.courses:
+            course_key = f"{course.course_number}"
+            if course_key not in max_courses:
+                max_courses[course_key] = course
+
+        return list(max_courses.values())
 
 class Scheduler:
     def __init__(self):
@@ -53,9 +62,8 @@ class Scheduler:
         while True:
             try:
                 n = int(input("Enter how many courses you would like to register for: "))
-                #will need to change the len of it so it will work properly since multiple courses of the same can be selected with this len
-                if n > len(self.course_manager.courses):
-                    print("you can't have more courses than " + str(len(self.course_manager.courses)))
+                if n > len(self.course_manager.max_offered_courses()):
+                    print("You can't have more courses than " + str(len(self.course_manager.max_offered_courses())))
                 else:
                     break
             except ValueError:
