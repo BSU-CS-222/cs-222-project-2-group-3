@@ -44,9 +44,21 @@ class Scheduler:
         self.course_manager = CourseManager()
 
     def display_available_courses(self):
-        print("Available courses:")
-        for course in self.course_manager.courses:
-            print(f"{course.course_number}")
+        print("Available Courses:".center(60, ' '))
+        print("-" * 60)
+
+        unique_courses = sorted(set(course.course_number for course in self.course_manager.courses))
+        rows_per_column = 10 
+        num_columns = (len(unique_courses) + rows_per_column - 1) // rows_per_column
+
+        for row in range(rows_per_column):
+            for col in range(num_columns):
+                index = col * rows_per_column + row
+                if index < len(unique_courses):
+                    print(f"{unique_courses[index]:<20}", end='')
+            print()
+
+        print("-" * 60)
 
     def generate_schedule(self, selected_courses):
         schedule = []
