@@ -16,7 +16,6 @@ class CourseManager:
                 course_parts = line.strip().split()
                 if len(course_parts) >= 5:
                     course_key = f"{course_parts[0]}-{course_parts[1]}"
-                    # Check if the course is not already in the list before appending
                     if not any(course.course_number == course_key for course in self.courses):
                         course = Course(course_parts[0], course_parts[1], course_parts[2], course_parts[3], course_parts[4])
                         self.courses.append(course)
@@ -59,16 +58,6 @@ class Scheduler:
             print()
 
         print("-" * 60)
-
-    def generate_schedule(self, selected_courses):
-        schedule = []
-        for course_key in selected_courses:
-            course = self.course_manager.find_course(course_key)
-            if course:
-                schedule.append(course)
-            else:
-                print(f"Course {course_key} not found in the schedule.")
-        return schedule
 
     def register_courses(self):
         while True:
