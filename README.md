@@ -2,7 +2,7 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12760913&assignment_repo_type=AssignmentRepo)
 
 ## Project Description
-Iteration 2 of this project implements unit tests of all functional requirements. This includes a tests that:
+Iteration 3 of this project implements unit tests of all functional requirements. This includes a tests that:
 - Verify if all courses are being displayed correctly
 - Verify if the courses entered are valid
 - Verify if entered courses are stored correctly
