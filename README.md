@@ -2,6 +2,13 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12760913&assignment_repo_type=AssignmentRepo)
 
 ## Project Description
+
+Iteration 3 implements functionality of all functional requirements. This includes:
+- User input of how many classes they want to take
+- User input of which classes they want to take
+- A Scheduler class that creates a schedule out of sections that do not overlap
+- An output that lets the user know if there is no possible schedule with the given classes
+
 Iteration 3 of this project implements unit tests of all functional requirements. This includes a tests that:
 - Verify if all courses are being displayed correctly
 - Verify if the courses entered are valid
